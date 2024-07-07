@@ -1,12 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ book.title }}</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
     <h1>{{ book.title }}</h1>
-    <p><strong>Author:</strong> {{ book.author }}</p>
-    <p><strong>Genre:</strong> {{ book.genre }}</p>
-    <p><strong>Rating:</strong> {{ book.rating }}</p>
-</body>
-</html>
+    <p><strong>Autorzy:</strong> 
+       {% for author in book.authors %}
+           {{ author.name }}{% if not loop.last %}, {% endif %}
+       {% endfor %}
+    </p>
+    <p><strong>Gatunek:</strong> {{ book.genre }}</p>
+    <p><strong>Ocena:</strong> {{ book.rating }}</p>
+    <p><strong>Czy wypożyczona:</strong> 
+       {{ 'Tak' if book.borrow_records | selectattr('returned', 'eq', False) | list else 'Nie' }}
+    </p>
+    <form method="POST" action="{{ url_for('borrow_book', book_id=book.id) }}">
+        <button type="submit" class="btn btn-primary">Wypożycz</button>
+    </form>
+    {% for borrow_record in book.borrow_records %}
+        {% if not borrow_record.returned %}
+            <form method="POST" action="{{ url_for('return_book', borrow_id=borrow_record.id) }}">
+                <button type="submit" class="btn btn-secondary">Zwróć</button>
+            </form>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

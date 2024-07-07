@@ -1,20 +1,35 @@
-from wtforms import StringField, SelectField, IntegerField, SubmitField
-from wtforms.validators import DataRequired
-from wtforms.widgets import TextArea
 from flask_wtf import FlaskForm
+from wtforms import StringField, SelectField, IntegerField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired, NumberRange
 
 class AddBookForm(FlaskForm):
-    """Form for adding a new book."""
-    title = StringField("Title", validators=[DataRequired()])
-    author = StringField("Author", validators=[DataRequired()])
-    genre = StringField("Genre", validators=[DataRequired()])
-    rating = IntegerField("Rating (1-5)", validators=[DataRequired()])
-    submit = SubmitField("Add Book")
+    title = StringField('Tytuł', validators=[DataRequired()])
+    authors = TextAreaField('Autorzy', validators=[DataRequired()])
+    genre = SelectField('Gatunek', choices=[
+        ('Fantastyka', 'Fantastyka'),
+        ('Obyczajowa', 'Obyczajowa'),
+        ('Kryminał', 'Kryminał'),
+        ('Horror', 'Horror'),
+        ('Romans', 'Romans'),
+        ('Sci-fi', 'Sci-fi'),
+        ('Biografia', 'Biografia'),
+        ('Historia', 'Historia')
+    ], validators=[DataRequired()])
+    rating = IntegerField('Ocena', validators=[DataRequired(), NumberRange(min=1, max=10)])
+    submit = SubmitField('Dodaj książkę')
 
 class UpdateBookForm(FlaskForm):
-    """Form for updating an existing book."""
-    title = StringField("Title", validators=[DataRequired()])
-    author = StringField("Author", validators=[DataRequired()])
-    genre = StringField("Genre", validators=[DataRequired()])
-    rating = IntegerField("Rating (1-5)", validators=[DataRequired()])
-    submit = SubmitField("Update Book")
+    title = StringField('Tytuł', validators=[DataRequired()])
+    authors = TextAreaField('Autorzy', validators=[DataRequired()])
+    genre = SelectField('Gatunek', choices=[
+        ('Fantastyka', 'Fantastyka'),
+        ('Obyczajowa', 'Obyczajowa'),
+        ('Kryminał', 'Kryminał'),
+        ('Horror', 'Horror'),
+        ('Romans', 'Romans'),
+        ('Sci-fi', 'Sci-fi'),
+        ('Biografia', 'Biografia'),
+        ('Historia', 'Historia')
+    ], validators=[DataRequired()])
+    rating = IntegerField('Ocena', validators=[DataRequired(), NumberRange(min=1, max=10)])
+    submit = SubmitField('Zaktualizuj książkę')

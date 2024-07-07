@@ -1,51 +1,24 @@
-import json
+from app import db
 
-class Book:
-    """Represents a book in the library."""
-    def __init__(self, title, author, genre, rating):
-        self.title = title
-        self.author = author
-        self.genre = genre
-        self.rating = rating
+book_author = db.Table('book_author',
+    db.Column('book_id', db.Integer, db.ForeignKey('book.id')),
+    db.Column('author_id', db.Integer, db.ForeignKey('author.id'))
+)
 
-    def to_dict(self):
-        """Converts the book object to a dictionary."""
-        return {
-            "title": self.title,
-            "author": self.author,
-            "genre": self.genre,
-            "rating": self.rating,
-        }
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(128), nullable=False)
+    authors = db.relationship('Author', secondary=book_author, backref='books')
+    genre = db.Column(db.String(64))
+    rating = db.Column(db.Integer)
+    borrow_records = db.relationship('BorrowRecord', backref='book')
 
-class Books:
-    """Handles book data persistence."""
-    def __init__(self):
-        try:
-            with open("books.json", "r") as f:
-                self.books = [Book(**book_data) for book_data in json.load(f)]
-        except FileNotFoundError:
-            self.books = []
+class Author(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), nullable=False, unique=True)
 
-    def all(self):
-        """Returns a list of all books."""
-        return self.books
-
-    def get(self, id):
-        """Returns a book by its ID."""
-        return self.books[id]
-
-    def create(self, book):
-        """Adds a new book to the list."""
-        self.books.append(book)
-
-    def update(self, id, book):
-        """Updates an existing book by its ID."""
-        self.books[id] = book
-        self.save_all()
-
-    def save_all(self):
-        """Saves all books to the JSON file."""
-        with open("books.json", "w") as f:
-            json.dump([book.to_dict() for book in self.books], f)
-
-books = Books()
+class BorrowRecord(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
+    borrowed = db.Column(db.Boolean, default=False)
+    returned = db.Column(db.Boolean, default=False)

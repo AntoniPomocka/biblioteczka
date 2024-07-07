@@ -1,43 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Book</title>
-</head>
-<body>
-    <h1>Add Book</h1>
+{% extends "base.html" %}
+
+{% block title %}Dodaj książkę{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Dodaj książkę</h1>
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.title.label }}
-            {{ form.title(size=32) }}
-            {% for error in form.title.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+        <div class="form-group">
+            {{ form.title.label }}<br>
+            {{ form.title(class="form-control") }}
         </div>
-        <div>
-            {{ form.author.label }}
-            {{ form.author(size=32) }}
-            {% for error in form.author.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+        <div class="form-group">
+            {{ form.authors.label }}<br>
+            {{ form.authors(class="form-control") }}
         </div>
-        <div>
-            {{ form.genre.label }}
-            {{ form.genre(size=32) }}
-            {% for error in form.genre.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+        <div class="form-group">
+            {{ form.genre.label }}<br>
+            {{ form.genre(class="form-control") }}
         </div>
-        <div>
-            {{ form.rating.label }}
-            {{ form.rating(size=32) }}
-            {% for error in form.rating.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+        <div class="form-group">
+            {{ form.rating.label }}<br>
+            {{ form.rating(class="form-control") }}
         </div>
-        <div>
-            {{ form.submit }}
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
         </div>
     </form>
-</body>
-</html>
+</div>
+{% endblock %}

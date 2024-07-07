@@ -1,76 +1,88 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Library</title>
+    <title>Domowa Biblioteka</title>
     <style>
         body {
-            font-family: sans-serif;
-            margin: 0;
-            padding: 20px;
+            font-family: Arial, sans-serif;
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        h1 {
+        .header, .footer {
+            background-color: #8B4513;
+            color: white;
             text-align: center;
+            padding: 1em;
         }
-        table {
+        .content {
+            background-color: #D2B48C;
+            padding: 1em;
+        }
+        .books-table {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 1em;
         }
-        th, td {
-            padding: 10px;
+        .books-table th, .books-table td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            font-size: 1.2em;
+        }
+        .books-table th {
+            font-weight: bold;
+            text-align: center;
+        }
+        .books-table td {
+            text-align: center;
+        }
+        .recent-books {
             text-align: left;
-            border-bottom: 1px solid #ccc;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Library</h1>
-        <a href="{{ url_for('add_book') }}">Add New Book</a>
-        <form method="GET">
-            <input type="text" name="search_term" placeholder="Search by title...">
-            <button type="submit">Search</button>
-        </form>
-        <table>
+    <div class="header">
+        <h1>Domowa Biblioteka</h1>
+    </div>
+    <div class="content">
+        <h2>Ostatnio dodane książki</h2>
+        <div class="recent-books">
+            {% for book in recent_books %}
+            <p>{{ book.title }} - {% for author in book.authors %}{{ author.name }}{% if not loop.last %}, {% endif %}{% endfor %}</p>
+            {% endfor %}
+        </div>
+        <h2>Wszystkie książki</h2>
+        <table class="books-table">
             <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Genre</th>
-                    <th>Rating</th>
-                    <th>Actions</th>
+                    <th>Tytuł</th>
+                    <th>Autor</th>
+                    <th>Gatunek</th>
+                    <th>Ocena</th>
+                    <th>Czy wypożyczona</th>
+                    <th>Akcje</th>
                 </tr>
             </thead>
             <tbody>
                 {% for book in books %}
                 <tr>
-                    <td><a href="{{ url_for('book_details', book_id=loop.index) }}">{{ book.title }}</a></td>
-                    <td>{{ book.author }}</td>
+                    <td style="text-align: left;"><a href="{{ url_for('book_details', book_id=book.id) }}">{{ book.title }}</a></td>
+                    <td style="text-align: left;">{% for author in book.authors %}{{ author.name }} {% endfor %}</td>
                     <td>{{ book.genre }}</td>
                     <td>{{ book.rating }}</td>
+                    <td>{{ 'Tak' if book.borrow_records | selectattr('returned', 'eq', False) | list else 'Nie' }}</td>
                     <td>
-                        <a href="{{ url_for('update_book', book_id=loop.index) }}">Edit</a>
+                        <a href="{{ url_for('update_book', book_id=book.id) }}" class="btn btn-secondary">Edytuj</a>
+                        <form method="POST" action="{{ url_for('delete_book', book_id=book.id) }}" style="display:inline;">
+                            <button type="submit" class="btn btn-danger">Usuń</button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <a href="{{ url_for('add_book') }}" class="btn btn-primary">Dodaj nową książkę</a>
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 Domowa Biblioteka</p>
     </div>
 </body>
 </html>

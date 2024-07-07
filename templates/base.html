@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Domowa Biblioteka{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .header, .footer {
+            background-color: #8B4513;
+            color: white;
+            text-align: center;
+            padding: 1em;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            background-color: #D2B48C;
+            padding: 1em;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 5px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Domowa Biblioteka</h1>
+    </div>
+    {% block content %}{% endblock %}
+    <div class="footer">
+        <p>&copy; 2024 Domowa Biblioteka</p>
+    </div>
+</body>
+</html>
