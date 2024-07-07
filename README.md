@@ -4,15 +4,16 @@ To jest prosta aplikacja webowa do zarządzania domową biblioteką. Aplikacja w
 
 ## Instalacja
 
-   git clone <https://github.com/AntoniPomocka/biblioteczka)>
-   cd library_app
-   python -m venv venv
-  .venv\Scripts\activate
-  pip install -r requirements.txt
-  flask db init
-  flask db migrate -m "Initial migration."
-  flask db upgrade
-  flask run
+git clone <https://github.com/AntoniPomocka/biblioteczka)>
+
+1. cd library_app
+2. python -m venv venv
+3. venv\Scripts\activate
+4. pip install -r requirements.txt
+5. flask db init
+6. flask db migrate -m "Initial migration."
+7. flask db upgrade
+8. flask run
 
   Użycie
 
